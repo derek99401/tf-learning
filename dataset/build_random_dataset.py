@@ -2,7 +2,6 @@
 import random
 import argparse
 from lmdb_dataset_builder import LmdbDatasetBuilder
-import tensorflow as tf
 import numpy as np
 from utils import get_feature_from_array, get_label_from_array
 
@@ -25,4 +24,4 @@ if __name__ == '__main__':
     arg_parser.add_argument("output_lmdb")
     args = arg_parser.parse_args()
     builder = LmdbDatasetBuilder()
-    builder.build_with_feature_and_label(args.output_lmdb, feature_gen, label_gen)
+    builder.build_with_feature_and_label(args.output_lmdb, feature_gen(), label_gen())

@@ -6,6 +6,7 @@ class LmdbDatasetBuilder(object):
 
     def __init__(self):
         pass
+        self.map_size = 1*1024*1024*1024 #1GB
 
     def build_with_feature(self, output_file, feature_generator):
         """
@@ -14,10 +15,10 @@ class LmdbDatasetBuilder(object):
             feature_generator: a generator function, should yield a dict,
                 where key is string and value is tf.train.Feature
         """
-        lmdb_env = lmdb.open(output_file)
+        lmdb_env = lmdb.open(output_file, self.map_size)
         cnt = 0
         with lmdb_env.begin(write=True) as txn:
-            for feature in feature_generator():
+            for feature in feature_generator:
                 sample = tf.train.Example(features=tf.train.Features(feature=feature))
                 txn.put(str(cnt).encode('ascii'), sample.SerializeToString())
                 print(cnt)
@@ -33,10 +34,10 @@ class LmdbDatasetBuilder(object):
             label_generator: a generator function, should yield a dict,
                 where key is string and value is tf.train.Feature
         """
-        lmdb_env = lmdb.open(output_file)
+        lmdb_env = lmdb.open(output_file, self.map_size)
         cnt = 0
         with lmdb_env.begin(write=True) as txn:
-            for feature, label in zip(feature_generator(), label_generator()):
+            for feature, label in zip(feature_generator, label_generator):
                 feature_label = {}
                 feature_label.update(feature)
                 feature_label.update(label)
