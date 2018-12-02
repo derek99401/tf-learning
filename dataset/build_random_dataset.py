@@ -1,7 +1,7 @@
 """generate a random dataset"""
 import random
 import argparse
-from lmdb_dataset_builder import LmdbDatasetBuilder
+import tfrecords_dataset_builder as builder
 import numpy as np
 from utils import get_feature_from_array, get_label_from_array
 
@@ -21,7 +21,6 @@ def label_gen():
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("output_lmdb")
+    arg_parser.add_argument("output_dataset")
     args = arg_parser.parse_args()
-    builder = LmdbDatasetBuilder()
-    builder.build_with_feature_and_label(args.output_lmdb, feature_gen(), label_gen())
+    builder.build_with_feature_and_label(args.output_dataset, feature_gen(), label_gen())
