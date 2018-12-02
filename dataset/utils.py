@@ -17,7 +17,6 @@ def get_feature_from_array(nparray):
     """
     return {
         'feature_shape': _int64list_feature(nparray.shape),
-        'feature_depth': _bytes_feature(nparray.dtype.name.encode()),
         'feature_data': _bytes_feature(nparray.tobytes())
     }
 
@@ -27,6 +26,5 @@ def get_label_from_array(nparray):
     """
     return {
         'label_shape': _int64list_feature(nparray.shape),
-        'label_depth': _bytes_feature(nparray.dtype.name.encode()),
         'label_data': _bytes_feature(nparray.tobytes())
     }
