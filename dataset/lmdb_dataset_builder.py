@@ -21,7 +21,6 @@ class LmdbDatasetBuilder(object):
             for feature in feature_generator:
                 sample = tf.train.Example(features=tf.train.Features(feature=feature))
                 txn.put(str(cnt).encode('ascii'), sample.SerializeToString())
-                print(cnt)
                 cnt += 1
         lmdb_env.close()
 
@@ -43,7 +42,6 @@ class LmdbDatasetBuilder(object):
                 feature_label.update(label)
                 sample = tf.train.Example(features=tf.train.Features(feature=feature_label))
                 txn.put(str(cnt).encode('ascii'), sample.SerializeToString())
-                print(cnt)
                 cnt += 1
 
         lmdb_env.close()
