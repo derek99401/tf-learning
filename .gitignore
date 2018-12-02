@@ -108,3 +108,5 @@ venv.bak/
 /bazel-*
 /bazel.iml
 
+#local data dir
+data/
