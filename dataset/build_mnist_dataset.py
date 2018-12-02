@@ -1,7 +1,7 @@
 """Read MNIST Feature file"""
 import struct
 import argparse
-from lmdb_dataset_builder import LmdbDatasetBuilder
+import tfrecords_dataset_builder as builder
 import numpy as np
 from utils import get_feature_from_array, get_label_from_array
 
@@ -23,7 +23,7 @@ def read_mnist_image_file(filepath):
         rows = _read_int32(fr)
         cols = _read_int32(fr)
         img_size = rows*cols
-        print('n_images', n_images, 'rows', rows, 'cols', cols)
+        print('open ', filepath, 'n_images', n_images, 'rows', rows, 'cols', cols)
 
         data = fr.read()
         assert len(data) == img_size*n_images
@@ -42,7 +42,7 @@ def read_mnist_label_file(filepath):
         assert magic_number == 2049
 
         n_items = _read_int32(fr)
-        print('n_items', n_items)
+        print('open ', filepath, 'n_items', n_items)
 
         data= fr.read()
         assert n_items == len(data)
@@ -65,7 +65,7 @@ class MnistLabels(object):
 
     def __iter__(self):
         for i in range(self.labels.size):
-            label_vector = np.zeros(10)
+            label_vector = np.zeros(10, dtype=np.uint8)
             label_vector[self.labels[i]] = 1
             yield get_label_from_array(label_vector)
 
@@ -74,15 +74,14 @@ class MnistLabels(object):
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument('--images', help='MNIST image file')
-    arg_parser.add_argument('--labels', help='MNIST label file')
-    arg_parser.add_argument('-o', '--output', help='lmdb output')
+    arg_parser.add_argument('--images', required=True, help='MNIST image file')
+    arg_parser.add_argument('--labels', required=True, help='MNIST label file')
+    arg_parser.add_argument('-o', '--output', required=True, help='tfrecords output')
     args = arg_parser.parse_args()
-    builder = LmdbDatasetBuilder()
     feature_gen = MnistImages(args.images)
     label_gen = MnistLabels(args.labels)
     assert feature_gen.size() > 0
     assert label_gen.size() > 0
     assert feature_gen.size() == label_gen.size()
-    print(feature_gen.size())
     builder.build_with_feature_and_label(args.output, feature_gen, label_gen)
+    print('build tfrecords to ', args.output)
