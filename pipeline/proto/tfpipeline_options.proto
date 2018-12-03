@@ -1,0 +1,10 @@
+// tfpipeline_options.proto
+syntax = "proto3";
+
+
+message TfpipelineOptions {
+    int64 max_iter = 1;
+    repeated string input_files = 2;
+    int64 batch_size = 3;
+    string data_depth = 4;
+}

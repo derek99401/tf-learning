@@ -1,6 +1,6 @@
 import tensorflow as tf
-from tfpipeline import TfPipeline, ActionType
-from models.input_only_model import InputOnlyModel
+from pipeline.tfpipeline import TfPipeline, ActionType
+from pipeline.models.input_only_model import InputOnlyModel
 import argparse
 
 if __name__ == '__main__':
