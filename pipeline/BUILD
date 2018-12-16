@@ -16,8 +16,8 @@ py_binary(
 )
 
 py_binary(
-    name = "config",
-    srcs = ["config.py"],
+    name = "print_config",
+    srcs = ["print_config.py"],
     deps = [
         "//pipeline/proto:tfpipeline_options_py",
     ],

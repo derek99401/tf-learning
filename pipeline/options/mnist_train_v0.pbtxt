@@ -1,0 +1,4 @@
+max_iter: 50000
+input_files: '/home/derekxm/git/tf-learning/data/mnist_database/t10k.tfrecord'
+batch_size: 50
+data_depth: 'uint8'
